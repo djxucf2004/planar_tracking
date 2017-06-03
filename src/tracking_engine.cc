@@ -189,7 +189,7 @@ void TrackingEngine::GetOverlayImage(cv::Mat* image) {
   if (!latest_tracked_object_.cam_T_world.empty()) {
     cv::Matx44d cam_T_obj =
       GetMatx44Pose<cv::Matx44d, double>(latest_tracked_object_.cam_T_world);
-    std::cout << "cam_T_obj= " << cam_T_obj << std::endl;
+    // std::cout << "cam_T_obj= " << cam_T_obj << std::endl;
     VisualPlotImage(image, cam_T_obj, *params_.camera_model);
   }
 }

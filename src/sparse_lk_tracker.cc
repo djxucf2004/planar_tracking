@@ -228,6 +228,10 @@ bool SparseLKTracker::LoadConfigParams(const char* filename) {
 
   int temp = static_cast<int>(fn["illumination_correct"]);
   lk_config_.illumination_correct = (temp != 0) ? true : false;
+
+  lk_config_.min_contour_area =
+    static_cast<double>(fn["min_contour_area"]);
+
   fs.release();
   return true;
 }
@@ -257,10 +261,6 @@ bool SparseLKTracker::ComputePoseAndHomography(
                                       cv::RANSAC,
                                       lk_config_.homography_reproj_thresh,
                                       inliers_homography);
-  if (template_warp_.at<double>(2, 2) < kHomograpyThresh) {
-    return false;
-  }
-
   int num_inliers_homography = cv::countNonZero(inliers_homography);
   if (num_inliers_homography < lk_config_.min_homography_inliers) {
     return false;
@@ -296,6 +296,15 @@ bool SparseLKTracker::ComputePoseAndHomography(
       return false;
     }
     UpdatePointStatus(inliers_index, inliers_pnp, inliers);
+  }
+  // Project 3d points
+  const size_t numpts = picture_model_->corner_pts_3d_.size();
+  std::vector<cv::Point2f> contour_pts(numpts);
+  cv::projectPoints(picture_model_->corner_pts_3d_, *rvec, *tvec,
+                    camera_matrix, cv::Mat_<double>(), contour_pts);
+  double contour_area = cv::contourArea(contour_pts);
+  if (contour_area < lk_config_.min_contour_area) {
+    return false;
   }
   return true;
 }

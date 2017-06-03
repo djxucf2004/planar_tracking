@@ -27,7 +27,8 @@ struct SparseLKTrackerConfig {
      hgram_distance_thresh(0.7),
      homography_reproj_thresh(3),
      pnp_reproj_thresh(8),
-     illumination_correct(true) {}
+     illumination_correct(true),
+     min_contour_area(64) {}
 
   int min_optflow_inliers;
   int min_pnp_inliers;
@@ -39,6 +40,7 @@ struct SparseLKTrackerConfig {
   double homography_reproj_thresh;
   float pnp_reproj_thresh;
   bool illumination_correct;
+  double min_contour_area;
 };
 
 struct SparseLKTrackerOptions {
@@ -61,8 +63,6 @@ class SparseLKTracker : public PictureTracker {
   bool PointInRange(const cv::Size image_size, const int xpos,
                     const int ypos, const int x_radius,
                     const int y_radius);
-
-  static constexpr double kHomograpyThresh = 0.9;
 
 private:
   bool LoadConfigParams(const char* filename);

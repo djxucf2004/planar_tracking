@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <opencv_storage>
 <picture_model>
-  <name>YM</name>
-  <image_path>/home/parallels/Work/planar_tracking/config/pictures/yosemite.png</image_path>
-  <width>0.148</width>
-  <height>0.106</height>
+  <name>FL</name>
+  <image_path>/home/parallels/Work/planar_tracking/config/pictures/the_fool.png</image_path>
+  <width>0.106</width>
+  <height>0.148</height>
 </picture_model>
 <orb>
   <WTA_K>2</WTA_K>
@@ -76,5 +76,7 @@
   <hgram_distance_thresh>0.8</hgram_distance_thresh>
   <homography_reproj_thresh>3</homography_reproj_thresh>
   <pnp_reproj_thresh>12</pnp_reproj_thresh>
+  <illumination_correct>1</illumination_correct>
+  <min_contour_area>100</min_contour_area>
 </picture_tracker>
 </opencv_storage>
